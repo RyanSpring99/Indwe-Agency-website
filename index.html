@@ -79,7 +79,7 @@
       --bone-dark:   #EDE8DF;
     }
 
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; min-width: 1200px; }
     body {
       font-family: 'Inter', sans-serif;
       background: var(--bone);
@@ -166,6 +166,7 @@
       background: rgba(12,28,40,0.25);
       backdrop-filter: blur(4px);
       padding: 0.45rem 1rem;
+      white-space: nowrap;
       transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
     }
     .nav-links a:hover {
@@ -587,7 +588,7 @@
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
-      display: flex; align-items: center; justify-content: flex-end;
+      display: flex; align-items: flex-start; justify-content: flex-end;
     }
     .truck-standalone::before {
       content: ''; position: absolute; inset: 0;
@@ -596,7 +597,7 @@
     }
     .truck-standalone-text {
       position: relative; z-index: 2;
-      padding: 2rem 4rem 10rem 2rem;
+      padding: 5vw 4rem 2rem 2rem;
       text-align: right;
     }
     .truck-standalone-text p {
@@ -666,6 +667,22 @@
     .reveal-right { opacity: 0; transform: translateX(26px); }
 
     /* ─── RESPONSIVE ─── */
+
+    /* Medium desktop — nav tagline collapses before buttons collide with left text */
+    @media (max-width: 1420px) {
+      .nav { padding-left: 3rem; padding-right: 2.5rem; }
+      .nav.scrolled { padding-left: 3rem; padding-right: 2.5rem; }
+      .nav-brand-sep { display: none; }
+      .nav-tagline { display: none; }
+    }
+    @media (max-width: 1280px) {
+      .nav { padding-left: 2rem; padding-right: 1.75rem; }
+      .nav.scrolled { padding-left: 2rem; padding-right: 1.75rem; }
+      .nav-links { gap: 0.6rem; }
+      .nav-links a { padding: 0.4rem 0.75rem; letter-spacing: 0.07em; }
+      .footer-top { grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 2.5rem; }
+    }
+
     @media (max-width: 1100px) {
       .stats-grid     { grid-template-columns: repeat(2, 1fr); }
       .services-grid  { grid-template-columns: repeat(2, 1fr); }
@@ -1014,6 +1031,7 @@
       border: 1.5px solid rgba(245,241,234,0.2);
       background: rgba(12,28,40,0.2); backdrop-filter: blur(4px);
       padding: 0.4rem 0.9rem;
+      white-space: nowrap;
       transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
     }
     .onb-links a:hover {
@@ -1166,9 +1184,9 @@
 
     <div class="hero-content">
       <h1 class="hero-headline">
-        <span class="line"><span class="word"><em>From Africa's</em></span></span>
+        <span class="line"><span class="word"><span style="color:var(--mist)">From Africa's</span></span></span>
         <span class="line"><span class="word"><strong>Gateway,</strong></span></span>
-        <span class="line"><span class="word"><em>To Every</em></span></span>
+        <span class="line"><span class="word"><span style="color:var(--mist)">To Every</span></span></span>
         <span class="line"><span class="word"><strong>Door.</strong></span></span>
       </h1>
       <p class="hero-sub">
