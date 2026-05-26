@@ -668,16 +668,19 @@
 
     /* ─── RESPONSIVE ─── */
 
-    /* Medium desktop — nav tagline collapses before buttons collide with left text */
-    @media (max-width: 1520px) {
-      .nav { padding-left: 3rem; padding-right: 2.5rem; }
-      .nav.scrolled { padding-left: 3rem; padding-right: 2.5rem; }
-      .nav-brand-sep { display: none; }
-      .nav-tagline { display: none; }
+    /* Medium desktop — reduce padding/button size to fit tagline at ~1440px (MacBook Air) */
+    @media (max-width: 1600px) {
+      .nav { padding-left: 2.5rem; padding-right: 2rem; }
+      .nav.scrolled { padding-left: 2.5rem; padding-right: 2rem; }
+      .nav-links { gap: 0.65rem; }
+      .nav-links a { padding: 0.4rem 0.8rem; letter-spacing: 0.07em; }
     }
-    @media (max-width: 1280px) {
+    /* Narrower — now hide tagline once it genuinely can't fit */
+    @media (max-width: 1360px) {
       .nav { padding-left: 2rem; padding-right: 1.75rem; }
       .nav.scrolled { padding-left: 2rem; padding-right: 1.75rem; }
+      .nav-brand-sep { display: none; }
+      .nav-tagline { display: none; }
       .nav-links { gap: 0.6rem; }
       .nav-links a { padding: 0.4rem 0.75rem; letter-spacing: 0.07em; }
       .footer-top { grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 2.5rem; }
