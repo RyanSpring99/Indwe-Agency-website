@@ -1,0 +1,11 @@
+# Dev tooling notes (internal only)
+Web Design CLAUDE/
+
+# Node / screenshot tooling (no node_modules since no package.json)
+node_modules/
+temporary screenshots/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini

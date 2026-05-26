@@ -1,0 +1,2290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INDWE Agency — Warehousing &amp; Distribution | Durban, KZN</title>
+  <meta name="description" content="INDWE Agency — dedicated warehousing and distribution specialists serving KwaZulu-Natal and Transkei for over 25 years. FMCG experts based in Glen Anil, Durban.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://indweagency.co.za/">
+  <meta property="og:title" content="INDWE Agency — Warehousing &amp; Distribution | Durban, KZN">
+  <meta property="og:description" content="Dedicated warehousing and distribution for FMCG companies across KwaZulu-Natal and Transkei. 25+ years experience. Based in Glen Anil, Durban.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://indweagency.co.za/">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "INDWE Agency",
+    "description": "Dedicated warehousing and distribution service for FMCG companies in KwaZulu-Natal and Transkei, South Africa",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Unit 112, Ensor Industrial Park, 21 Donald Ensor Road",
+      "addressLocality": "Glen Anil, Durban",
+      "addressRegion": "KwaZulu-Natal",
+      "addressCountry": "ZA"
+    },
+    "telephone": "+27315692378",
+    "email": "indweagency@mweb.co.za",
+    "url": "https://indweagency.co.za/",
+    "areaServed": [
+      {"@type": "AdministrativeArea", "name": "KwaZulu-Natal"},
+      {"@type": "AdministrativeArea", "name": "Transkei"}
+    ]
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=Inter:wght@300;400;500;600&family=Michroma&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            teal:   { DEFAULT: '#2E6F89', dark: '#1E4F65', deeper: '#152F3D', light: '#3C8B99' },
+            mist:   '#A0C2C4',
+            ink:    '#1A1A1A',
+            bone:   { DEFAULT: '#F5F1EA', dark: '#EDE8DF' },
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"', 'serif'],
+            body:    ['Inter', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal:        #2E6F89;
+      --teal-dark:   #1E4F65;
+      --teal-deeper: #152F3D;
+      --teal-light:  #3C8B99;
+      --mist:        #A0C2C4;
+      --ink:         #1A1A1A;
+      --bone:        #F5F1EA;
+      --bone-dark:   #EDE8DF;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bone);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAV ─── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.4rem 3.5rem 1.4rem 6rem;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background 0.4s ease, padding 0.4s ease, box-shadow 0.4s ease;
+    }
+    .nav.scrolled {
+      background: rgba(245,241,234,0.96);
+      backdrop-filter: blur(14px);
+      padding: 0.9rem 3.5rem 0.9rem 6rem;
+      box-shadow: 0 1px 0 rgba(46,111,137,0.1), 0 4px 28px rgba(0,0,0,0.06);
+    }
+
+    .nav-left { display: flex; align-items: center; gap: 0; }
+
+    /* Logo: hidden in hero, visible when scrolled */
+    .nav-logo {
+      overflow: hidden; max-width: 0; opacity: 0;
+      transition: max-width 0.4s ease, opacity 0.4s ease;
+      flex-shrink: 0;
+    }
+    .nav.scrolled .nav-logo { max-width: 80px; opacity: 1; }
+    .nav.scrolled .nav-logo + .nav-brand-text { margin-left: 1.5rem; }
+    .nav-logo img { height: 46px; width: auto; filter: none; display: block; }
+
+    /* Brand text: visible in hero, hidden when scrolled */
+    .nav-brand-text {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.72rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
+      -webkit-text-stroke: 0.4px currentColor;
+      color: rgba(245,241,234,0.9); white-space: nowrap;
+      overflow: hidden; max-width: 200px;
+      transition: max-width 0.4s ease, opacity 0.4s ease;
+    }
+    .nav.scrolled .nav-brand-text { max-width: 0; opacity: 0; }
+
+    /* Separator between brand text and tagline */
+    .nav-brand-sep {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.72rem; font-weight: 400; letter-spacing: 0;
+      -webkit-text-stroke: 0;
+      color: rgba(245,241,234,0.9);
+      white-space: nowrap; overflow: hidden; max-width: 40px;
+      transition: max-width 0.4s ease, opacity 0.4s ease;
+      flex-shrink: 0;
+    }
+    .nav.scrolled .nav-brand-sep { max-width: 0; opacity: 0; }
+
+    .nav-tagline {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.65rem; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
+      -webkit-text-stroke: 0.4px currentColor;
+      color: rgba(245,241,234,0.9);
+      pointer-events: none;
+      transition: color 0.4s ease;
+      white-space: nowrap; display: flex; align-items: center; gap: 0;
+    }
+    .nav.scrolled .nav-tagline { color: var(--ink); margin-left: 1.2rem; }
+    .nav-tagline .nav-sep {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0;
+      -webkit-text-stroke: 0;
+      color: rgba(245,241,234,0.9);
+      padding: 0 0.45em;
+      transition: color 0.4s ease;
+    }
+    .nav.scrolled .nav-tagline .nav-sep { color: var(--ink); }
+
+    .nav-links { display: flex; align-items: center; gap: 1rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.72rem; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+      -webkit-text-stroke: 0.4px currentColor;
+      color: rgba(245,241,234,0.8); text-decoration: none;
+      border: 1.5px solid rgba(245,241,234,0.28);
+      background: rgba(12,28,40,0.25);
+      backdrop-filter: blur(4px);
+      padding: 0.45rem 1rem;
+      transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+    .nav-links a:hover {
+      color: var(--bone);
+      border-color: rgba(245,241,234,0.55);
+      background: rgba(46,111,137,0.55);
+    }
+    .nav.scrolled .nav-links a {
+      color: var(--ink);
+      border-color: rgba(26,26,26,0.25);
+      background: rgba(245,241,234,0.55);
+      backdrop-filter: blur(4px);
+    }
+    .nav.scrolled .nav-links a:hover {
+      color: var(--bone);
+      border-color: var(--teal);
+      background: rgba(46,111,137,0.55);
+    }
+
+
+    /* ─── HERO ─── */
+    .hero {
+      min-height: 100vh;
+      background: var(--teal-deeper); /* fallback while images load */
+      position: relative; display: flex; align-items: center; overflow: hidden;
+    }
+
+    /* ── Slider ── */
+    .hero-slider {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    .hero-slide {
+      position: absolute; inset: 0;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      opacity: 0;
+      transition: opacity 1.4s ease;
+      will-change: opacity;
+    }
+    .hero-slide.active { opacity: 1; }
+
+    /* Dark gradient overlay — heavier left (text side), lighter right (truck side) */
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 1; pointer-events: none;
+      background:
+        linear-gradient(100deg, rgba(12,28,40,0.52) 0%, rgba(12,28,40,0.32) 50%, rgba(12,28,40,0.12) 100%),
+        linear-gradient(to top, rgba(12,28,40,0.28) 0%, transparent 40%);
+    }
+
+    /* Subtle noise texture over the overlay */
+    .hero-noise {
+      position: absolute; inset: 0; z-index: 2; opacity: 0.03; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* Slider arrow controls */
+    .slider-arrow {
+      position: absolute; top: 50%; z-index: 10; transform: translateY(-50%);
+      width: 50px; height: 50px;
+      border: 1.5px solid rgba(245,241,234,0.28);
+      background: rgba(12,28,40,0.25);
+      backdrop-filter: blur(4px);
+      color: var(--bone); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.25s ease, border-color 0.25s ease;
+      padding: 0;
+    }
+    .slider-arrow:hover {
+      background: rgba(46,111,137,0.55);
+      border-color: rgba(245,241,234,0.55);
+    }
+    .slider-arrow-prev { left: 2rem; }
+    .slider-arrow-next { right: 2rem; }
+
+    /* Slider dot indicators */
+    .slider-dots {
+      position: absolute; bottom: 5.5rem; left: 50%; transform: translateX(-50%);
+      z-index: 10; display: flex; gap: 0.65rem; align-items: center;
+    }
+    .slider-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(245,241,234,0.35); border: 1px solid rgba(245,241,234,0.5);
+      cursor: pointer; padding: 0;
+      transition: background 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
+    }
+    .slider-dot.active {
+      background: var(--bone);
+      border-color: var(--bone);
+      transform: scale(1.3);
+    }
+
+    .hero-content {
+      position: relative; z-index: 3;
+      max-width: none; margin: 0; padding: 9rem 3.5rem 6rem 6rem;
+      width: 100%;
+    }
+
+
+    .hero-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4.2rem, 9.5vw, 8.5rem);
+      font-weight: 300; line-height: 0.9;
+      color: var(--bone); letter-spacing: -0.025em;
+      margin-bottom: 2.75rem;
+    }
+    .hero-headline .line { display: block; overflow: hidden; padding-bottom: 0.18em; margin-bottom: -0.18em; }
+    .hero-headline .word { display: inline-block; transform: translateY(112%); }
+    .hero-headline em { font-style: italic; color: var(--mist); }
+    .hero-headline strong { font-weight: 600; }
+
+    .hero-sub {
+      font-size: 0.95rem; font-weight: 300; line-height: 1.8;
+      color: #ffffff; max-width: 460px;
+      margin-bottom: 3rem; opacity: 0;
+    }
+
+    .hero-actions { display: flex; align-items: center; gap: 1.75rem; opacity: 0; }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.9rem 2.1rem;
+      background: var(--teal); color: var(--bone);
+      border: none; text-decoration: none; cursor: pointer;
+      transition: background 0.25s ease, transform 0.2s ease;
+    }
+    .btn-primary:hover { background: var(--teal-light); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      color: rgba(245,241,234,0.65); text-decoration: none;
+      transition: color 0.25s ease, gap 0.3s ease;
+    }
+    .btn-ghost:hover { color: var(--bone); gap: 0.85rem; }
+
+    .hero-scroll {
+      position: absolute; bottom: 2.75rem; left: 3.5rem; z-index: 3;
+      display: flex; align-items: center; gap: 1rem; opacity: 0;
+    }
+    .hero-scroll-line { width: 44px; height: 1px; background: rgba(160,194,196,0.35); }
+    .hero-scroll-text {
+      font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: rgba(160,194,196,0.55);
+    }
+
+    /* ─── MARQUEE ─── */
+    .marquee-band {
+      background: var(--bone); padding: 1.15rem 0; overflow: hidden;
+      border-top: 1px solid rgba(26,26,26,0.07);
+      border-bottom: 1px solid rgba(26,26,26,0.07);
+    }
+    .marquee-track {
+      display: flex; width: max-content;
+      animation: marquee-scroll 30s linear infinite;
+    }
+    .marquee-item { display: flex; align-items: center; white-space: nowrap; }
+    .marquee-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-weight: 400; font-style: italic; letter-spacing: 0.04em;
+      color: var(--ink); padding: 0 1.6rem;
+    }
+    .marquee-sep { color: var(--mist); font-size: 0.45rem; opacity: 0.65; }
+    @keyframes marquee-scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ─── STATS ─── */
+    .stats-section { background: var(--bone); padding: 0; }
+    .stats-grid {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+    }
+    .stat-item {
+      padding: 4rem 3rem;
+      border-left: 1px solid rgba(46,111,137,0.12);
+      position: relative;
+    }
+    .stat-item:last-child { border-right: 1px solid rgba(46,111,137,0.12); }
+    .stat-number {
+      font-family: 'Michroma', sans-serif;
+      font-size: clamp(1.68rem, 2.7vw, 2.52rem); font-weight: 400;
+      color: var(--teal); line-height: 1; letter-spacing: -0.01em;
+      margin-bottom: 0.6rem;
+    }
+    .stat-number sup, .stat-number .unit {
+      font-size: 0.42em; font-weight: 400; vertical-align: super; letter-spacing: 0;
+    }
+    .stat-label {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink); line-height: 1.6;
+    }
+
+    /* ─── SERVICES ─── */
+    .section-label {
+      font-size: 0.63rem; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase;
+      margin-bottom: 0.9rem;
+    }
+    .section-heading {
+      font-family: 'Michroma', sans-serif;
+      font-size: clamp(1.7rem, 2.6vw, 2.4rem);
+      font-weight: 400; letter-spacing: 0.01em; line-height: 1.2;
+      -webkit-text-stroke: 0.4px currentColor;
+    }
+
+    .services-header {
+      max-width: 1280px; margin: 0 auto 5rem;
+      display: flex; align-items: flex-end; justify-content: space-between; gap: 4rem;
+    }
+    .services-header-desc {
+      font-size: 0.85rem; font-weight: 300; line-height: 1.8;
+      color: var(--ink); max-width: 360px;
+    }
+
+    .services-grid {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px; background: rgba(46,111,137,0.08);
+    }
+    .service-card {
+      background: var(--bone-dark); padding: 3rem 2.75rem;
+      position: relative; overflow: hidden;
+      transition: background 0.35s ease;
+    }
+    .service-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background: var(--teal);
+      transition: width 0.45s ease;
+    }
+    .service-card:hover { background: var(--bone); }
+    .service-card:hover::after { width: 100%; }
+
+    .service-icon { width: 72px; height: 72px; margin-bottom: 1.75rem; object-fit: contain; filter: brightness(0.45) saturate(2.5); }
+    .service-title {
+      font-family: 'Michroma', sans-serif;
+      font-size: 1.15rem; font-weight: 400; letter-spacing: 0.02em;
+      color: var(--ink); margin-bottom: 0.7rem;
+      -webkit-text-stroke: 0.4px currentColor; text-transform: uppercase;
+    }
+    .service-body {
+      font-size: 0.85rem; font-weight: 300; line-height: 1.8;
+      color: var(--ink);
+    }
+
+    /* ─── ABOUT (dark split) ─── */
+    .about-section {
+      display: grid; grid-template-columns: 1fr 1fr; min-height: 72vh;
+    }
+    .about-left {
+      background: var(--ink);
+      padding: 7.5rem 4.5rem 7.5rem 3.5rem;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .about-right {
+      background: var(--teal-dark);
+      padding: 7.5rem 3.5rem 7.5rem 4.5rem;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .about-right::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 90% 70% at 85% 15%, rgba(160,194,196,0.1) 0%, transparent 60%);
+    }
+    .about-right-content { position: relative; z-index: 1; }
+
+    .check-list { display: flex; flex-direction: column; gap: 1.85rem; }
+    .check-item { display: flex; gap: 1.25rem; align-items: flex-start; }
+    .check-circle {
+      width: 30px; height: 30px; flex-shrink: 0; margin-top: 3px;
+      border: 1.5px solid rgba(160,194,196,0.3); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .check-title {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.9rem; font-weight: 400; color: var(--bone); margin-bottom: 0.35rem; letter-spacing: 0.02em;
+    }
+    .check-body {
+      font-size: 0.8rem; font-weight: 300; line-height: 1.8;
+      color: rgba(245,241,234,0.55);
+    }
+
+    /* ─── OUR TEAM ─── */
+    .team-section { background: var(--bone-dark); padding: 7.5rem 3.5rem; }
+    .team-grid {
+      max-width: 1280px; margin: 4rem auto 0;
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px; background: rgba(46,111,137,0.08);
+    }
+    .team-card {
+      background: var(--bone-dark); padding: 2.75rem 2.5rem;
+      transition: background 0.3s ease; position: relative; overflow: hidden;
+    }
+    .team-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0;
+      width: 0; height: 2px; background: var(--teal);
+      transition: width 0.45s ease;
+    }
+    .team-card:hover { background: var(--bone); }
+    .team-card:hover::after { width: 100%; }
+    .team-avatar {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: var(--teal); display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.5rem; flex-shrink: 0;
+    }
+    .team-avatar span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem; font-weight: 600; color: var(--bone); line-height: 1;
+    }
+    .team-name {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.95rem; font-weight: 400; color: var(--ink);
+      letter-spacing: 0.02em; margin-bottom: 0.35rem;
+      -webkit-text-stroke: 0.4px currentColor; text-transform: uppercase;
+    }
+    .team-role {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 1rem;
+    }
+    .team-bio { font-size: 0.85rem; font-weight: 300; line-height: 1.8; color: var(--ink); }
+    @media (max-width: 1100px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px)  { .team-grid { grid-template-columns: 1fr; } }
+
+    /* ─── WHY ─── */
+    .why-section { background: var(--bone); padding: 7.5rem 3.5rem; }
+    .why-grid {
+      max-width: 1280px; margin: 4rem auto 0;
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 2px; background: rgba(46,111,137,0.08);
+    }
+    .why-card {
+      background: var(--bone); padding: 2.75rem 2.25rem;
+      transition: background 0.3s ease;
+    }
+    .why-card:hover { background: var(--bone-dark); }
+    .why-num {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.85rem; font-weight: 400; line-height: 1;
+      color: rgba(46,111,137,0.55); letter-spacing: 0.04em; margin-bottom: 1.3rem;
+    }
+    .why-title {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.95rem; font-weight: 400; color: var(--ink);
+      margin-bottom: 0.7rem; line-height: 1.35; letter-spacing: 0.02em;
+      -webkit-text-stroke: 0.4px currentColor; text-transform: uppercase;
+    }
+    .why-body {
+      font-size: 0.85rem; font-weight: 300; line-height: 1.8;
+      color: var(--ink);
+    }
+
+    /* ─── COVERAGE ─── */
+    .coverage-section {
+      background: var(--teal-deeper); padding: 7.5rem 3.5rem;
+      position: relative; overflow: hidden;
+    }
+    .coverage-section::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background: radial-gradient(ellipse 55% 80% at 85% 50%, rgba(46,111,137,0.45) 0%, transparent 65%);
+    }
+    .coverage-noise {
+      position: absolute; inset: 0; opacity: 0.035; pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+    .coverage-inner {
+      max-width: 1280px; margin: 0 auto; position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+    }
+    .coverage-list { margin-top: 3rem; display: flex; flex-direction: column; }
+    .coverage-row {
+      display: flex; align-items: center; gap: 1.5rem;
+      padding: 1.3rem 0; border-bottom: 1px solid rgba(160,194,196,0.12);
+    }
+    .coverage-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: rgba(160,194,196,0.45); flex-shrink: 0;
+    }
+    .coverage-dot.primary { background: var(--mist); width: 7px; height: 7px; }
+    .coverage-name {
+      font-family: 'Michroma', sans-serif;
+      font-size: 1.22rem; font-weight: 400; color: var(--bone); letter-spacing: 0.02em;
+    }
+    .coverage-detail {
+      font-size: 0.7rem; font-weight: 300; color: rgba(160,194,196,0.55);
+      letter-spacing: 0.07em; margin-left: auto;
+    }
+
+    /* ─── CONTACT PAGE HEADINGS / LINKS ─── */
+    .cta-headline {
+      font-family: 'Michroma', sans-serif;
+      font-size: clamp(1.7rem, 2.6vw, 2.4rem); font-weight: 400;
+      color: var(--bone); line-height: 1.2; letter-spacing: 0.01em; margin-bottom: 1.2rem;
+      -webkit-text-stroke: 0.4px currentColor;
+    }
+    .cta-sub {
+      font-size: 0.85rem; font-weight: 300; line-height: 1.8;
+      color: rgba(245,241,234,0.55); max-width: 480px;
+    }
+    .btn-bone {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.9rem 2.1rem;
+      background: var(--bone); color: var(--teal-dark);
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background 0.25s ease, transform 0.2s ease, box-shadow 0.25s ease;
+    }
+    .btn-bone:hover {
+      background: #fff; transform: translateY(-1px);
+      box-shadow: 0 8px 36px rgba(0,0,0,0.14);
+    }
+    /* ─── TRUCK PHOTO standalone ─── */
+    .truck-standalone {
+      position: relative; overflow: hidden;
+      width: 100%; height: 56.25vw;
+      background-image: url('brand_assets/Indwe-Truck-1.jpg');
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      display: flex; align-items: center; justify-content: flex-end;
+    }
+    .truck-standalone::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to left, rgba(12,28,40,0.62) 0%, rgba(12,28,40,0.28) 55%, transparent 100%);
+      pointer-events: none;
+    }
+    .truck-standalone-text {
+      position: relative; z-index: 2;
+      padding: 2rem 4rem 10rem 2rem;
+      text-align: right;
+    }
+    .truck-standalone-text p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4.2rem, 9.5vw, 8.5rem);
+      font-weight: 300; line-height: 0.9;
+      letter-spacing: -0.025em;
+      color: var(--bone);
+    }
+    .truck-standalone-text em  { font-style: normal; color: var(--mist); }
+    .truck-standalone-text strong { font-weight: 600; color: var(--bone); }
+    .truck-standalone-text .tbl { display: block; padding-bottom: 0.18em; margin-bottom: -0.18em; }
+
+    /* ─── FOOTER ─── */
+    footer { background: #ffffff; padding: 5.5rem 3.5rem 3rem; }
+    .footer-top {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr 1fr; gap: 3.5rem;
+      padding-bottom: 4rem; border-bottom: 1px solid rgba(26,26,26,0.1); margin-bottom: 2.5rem;
+    }
+    img.footer-logo { height: 120px; width: auto; opacity: 1; margin-bottom: 1.5rem; display: block; }
+    .footer-col-brand { margin-left: -1.25rem; }
+    .footer-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; font-weight: 300; font-style: italic;
+      color: var(--ink); line-height: 1.65; max-width: 250px; margin-bottom: 1.75rem;
+    }
+    .footer-contact a {
+      display: block; font-size: 0.82rem; font-weight: 300;
+      color: var(--ink); text-decoration: none; line-height: 2.1;
+      transition: color 0.2s ease;
+    }
+    .footer-contact a:hover { color: var(--teal); }
+
+    .footer-col-title {
+      font-size: 0.62rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--ink); margin-bottom: 1.5rem;
+    }
+    .footer-col-links { list-style: none; }
+    .footer-col-links li { margin-bottom: 0.55rem; }
+    .footer-col-links a {
+      font-size: 0.82rem; font-weight: 300;
+      color: var(--ink); text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .footer-col-links a:hover { color: var(--teal); }
+
+    .footer-reg {
+      font-size: 0.72rem; font-weight: 300; line-height: 1.7;
+      color: var(--ink);
+    }
+
+    .footer-bottom {
+      max-width: 1280px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-legal {
+      font-size: 0.7rem; font-weight: 300; color: var(--ink);
+    }
+    .footer-domain {
+      font-size: 0.7rem; font-weight: 300; color: var(--ink);
+    }
+
+    /* ─── REVEAL INITIAL STATES ─── */
+    .reveal       { opacity: 0; transform: translateY(26px); }
+    .reveal-left  { opacity: 0; transform: translateX(-26px); }
+    .reveal-right { opacity: 0; transform: translateX(26px); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1100px) {
+      .stats-grid     { grid-template-columns: repeat(2, 1fr); }
+      .services-grid  { grid-template-columns: repeat(2, 1fr); }
+      .about-section  { grid-template-columns: 1fr; }
+      .why-grid       { grid-template-columns: repeat(2, 1fr); }
+      .coverage-inner { grid-template-columns: 1fr; gap: 3.5rem; }
+      .cta-inner      { flex-direction: column; gap: 3rem; }
+      .footer-top     { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+    }
+    @media (max-width: 768px) {
+      .nav { padding: 1rem 1.5rem; }
+      .nav.scrolled { padding: 0.75rem 1.5rem; }
+      .nav-left { gap: 0.75rem; }
+      .nav-links { display: none; }
+      .hero-content { padding: 7rem 1.5rem 4.5rem; }
+      .hero-scroll  { left: 1.5rem; }
+      .slider-arrow { display: none; }
+      .truck-standalone { height: 56.25vw; }
+      .stats-section, .why-section,
+      .coverage-section { padding: 5rem 1.5rem; }
+      .about-left, .about-right { padding: 5rem 1.5rem; }
+      .services-grid  { grid-template-columns: 1fr; }
+      .why-grid       { grid-template-columns: 1fr; }
+      .footer-top     { grid-template-columns: 1fr; gap: 2.5rem; }
+      footer          { padding: 4rem 1.5rem 2.5rem; }
+      .services-header { flex-direction: column; gap: 1.5rem; align-items: flex-start; }
+    }
+
+
+    /* Michroma has no italic — normalise all em tags in headings site-wide */
+    h1 em, h2 em, h3 em, h4 em,
+    .section-heading em,
+    .service-title em,
+    .why-title em,
+    .check-title em,
+    .cta-headline em { font-style: normal; }
+    /* Exception: hero headline keeps intentional Cormorant Garamond italic */
+    .hero-headline em { font-style: italic; }
+
+    /* ─── COVERAGE MAP ─── */
+    .coverage-map-wrap { max-width: 1280px; margin: 3.5rem auto 0; position: relative; z-index: 1; }
+    #coverageMap { height: 420px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(160,194,196,0.18); }
+    .leaflet-control-attribution { font-size: 0.6rem !important; opacity: 0.5; }
+    .leaflet-popup-content-wrapper { font-family: Inter, sans-serif; border-radius: 4px !important; }
+    .leaflet-popup-content { margin: 0.75rem 1rem !important; }
+
+    /* ─── QUOTE FORM ─── */
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-lbl {
+      display: block; font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.09em; text-transform: uppercase;
+      color: rgba(245,241,234,0.45); margin-bottom: 0.5rem;
+    }
+    .form-inp, .form-sel, .form-txt {
+      width: 100%; background: rgba(245,241,234,0.06);
+      border: 1px solid rgba(245,241,234,0.14); border-radius: 3px;
+      padding: 0.82rem 1rem; font-family: Inter, sans-serif;
+      font-size: 0.85rem; font-weight: 300; color: var(--bone);
+      outline: none; transition: border-color 0.25s;
+    }
+    .form-inp:focus, .form-sel:focus, .form-txt:focus { border-color: var(--mist); }
+    .form-inp::placeholder, .form-txt::placeholder { color: rgba(245,241,234,0.28); }
+    .form-sel { cursor: pointer; }
+    .form-sel option { background: #152F3D; color: var(--bone); }
+    .form-txt { resize: vertical; min-height: 90px; }
+    .radio-group { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 0.2rem; }
+    .radio-item { display: flex; align-items: center; gap: 0.45rem; cursor: pointer; }
+    .radio-item input { accent-color: var(--mist); cursor: pointer; }
+    .radio-item span { font-size: 0.85rem; font-weight: 300; color: rgba(245,241,234,0.7); }
+    .form-success {
+      display: none; padding: 1.1rem 1.25rem; border-radius: 3px; margin-top: 1rem;
+      background: rgba(160,194,196,0.1); border: 1px solid rgba(160,194,196,0.3);
+      color: var(--mist); font-size: 0.84rem; line-height: 1.65;
+    }
+    .cta-contact-link {
+      display: flex; align-items: center; gap: 0.85rem;
+      color: rgba(245,241,234,0.65); text-decoration: none;
+      font-size: 0.86rem; font-weight: 300; transition: color 0.2s;
+    }
+    .cta-contact-link:hover { color: var(--bone); }
+
+    /* ─── SOCIAL ICONS ─── */
+    .social-links { display: flex; gap: 0.65rem; margin-top: 1.5rem; }
+    .social-link {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 1px solid rgba(26,26,26,0.18);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(26,26,26,0.45); transition: border-color 0.2s, color 0.2s;
+      text-decoration: none;
+    }
+    .social-link:hover { border-color: var(--teal); color: var(--teal); }
+
+    /* ─── WHATSAPP FLOAT ─── */
+    .wa-float {
+      position: fixed; bottom: 2rem; right: 2rem; z-index: 9000;
+      width: 54px; height: 54px; border-radius: 50%;
+      background: #25D366; box-shadow: 0 4px 18px rgba(37,211,102,0.45);
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none; transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+    .wa-float:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(37,211,102,0.6); }
+    .wa-float svg { width: 27px; height: 27px; fill: #fff; }
+
+    /* ─── MOBILE CALL BAR ─── */
+    .mob-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 8999;
+      background: var(--ink); border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 0.7rem 1rem; display: none; grid-template-columns: 1fr 1fr; gap: 0.7rem;
+    }
+    .mob-call, .mob-email {
+      display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+      padding: 0.68rem; border-radius: 3px; font-family: Inter, sans-serif;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.03em; text-decoration: none;
+    }
+    .mob-call { background: var(--teal); color: var(--bone); }
+    .mob-email { background: rgba(245,241,234,0.08); color: var(--bone); border: 1px solid rgba(245,241,234,0.14); }
+    @media (max-width: 767px) {
+      .mob-bar { display: grid; }
+      .wa-float { bottom: 5.5rem; }
+      body { padding-bottom: 70px; }
+      .form-row { grid-template-columns: 1fr; }
+    }
+
+    /* ─── MAP TABS ─── */
+    .map-tabs-bar {
+      display: flex; gap: 0; margin-bottom: 0;
+      border-bottom: 1px solid rgba(160,194,196,0.18); margin-top: 3.5rem;
+    }
+    .map-tab-btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.65rem; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 0.75rem 1.6rem; background: none; border: none; cursor: pointer;
+      color: rgba(160,194,196,0.4); border-bottom: 2px solid transparent;
+      transition: color 0.2s ease, border-color 0.2s ease; margin-bottom: -1px;
+    }
+    .map-tab-btn.active { color: var(--mist); border-bottom-color: var(--mist); }
+    .map-tab-btn:hover:not(.active) { color: rgba(160,194,196,0.7); }
+    .map-panel { display: none; }
+    .map-panel.active { display: block; }
+    #facilityMap { height: 420px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(160,194,196,0.18); }
+    #facilityMap iframe { width: 100%; height: 100%; border: 0; display: block; border-radius: 6px; }
+
+    /* ─── BUSINESS HOURS ─── */
+    .biz-status {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem; font-weight: 300; letter-spacing: 0.04em;
+      margin-bottom: 1.5rem; color: rgba(245,241,234,0.55);
+    }
+    .biz-dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+      transition: background 0.3s;
+    }
+    .biz-dot.open   { background: #4ade80; box-shadow: 0 0 0 3px rgba(74,222,128,0.18); }
+    .biz-dot.closed { background: #f87171; box-shadow: 0 0 0 3px rgba(248,113,113,0.18); }
+    .biz-state { color: var(--bone); font-weight: 500; }
+
+    /* ─── DOWNLOAD PROFILE ─── */
+    .btn-dl {
+      display: inline-flex; align-items: center; gap: 0.55rem;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.9rem 1.75rem;
+      border: 1.5px solid rgba(245,241,234,0.22); color: rgba(245,241,234,0.6);
+      text-decoration: none; background: transparent;
+      transition: border-color 0.25s ease, color 0.25s ease;
+    }
+    .btn-dl:hover { border-color: rgba(245,241,234,0.6); color: var(--bone); }
+    .btn-dl svg { flex-shrink: 0; }
+
+    /* ─── CHATBOT ─── */
+    .chat-toggle {
+      position: fixed; bottom: 7rem; right: 2rem; z-index: 9100;
+      width: 52px; height: 52px;
+      background: var(--teal-deeper); border: 1.5px solid rgba(160,194,196,0.3);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      color: var(--bone); box-shadow: 0 4px 20px rgba(21,47,61,0.4);
+      transition: background 0.25s ease, transform 0.2s ease;
+    }
+    .chat-toggle:hover { background: var(--teal); transform: translateY(-2px); }
+
+    /* Notification badge */
+    .chat-badge {
+      position: fixed; bottom: calc(7rem + 34px); right: calc(2rem - 6px); z-index: 9101;
+      width: 18px; height: 18px; border-radius: 50%;
+      background: #e53e3e; border: 2px solid var(--bone);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+      color: #ffffff; pointer-events: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .chat-badge.hidden { opacity: 0; transform: scale(0); }
+    .chat-window {
+      position: fixed; bottom: 11rem; right: 2rem; z-index: 9100;
+      width: 360px;
+      background: var(--bone); border: 1px solid rgba(26,26,26,0.08);
+      box-shadow: 0 12px 56px rgba(0,0,0,0.18);
+      display: flex; flex-direction: column;
+      opacity: 0; pointer-events: none;
+      transform: translateY(12px) scale(0.98);
+      transition: opacity 0.28s ease, transform 0.28s ease;
+      overflow: hidden;
+    }
+    .chat-window.open { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
+    .chat-window.minimised .chat-messages,
+    .chat-window.minimised .chat-quick-replies,
+    .chat-window.minimised .chat-input-row { display: none; }
+    .chat-header {
+      background: var(--teal-deeper); padding: 0.9rem 1.25rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-shrink: 0;
+    }
+    .chat-header-info { display: flex; align-items: center; gap: 0.75rem; }
+    .chat-avatar {
+      width: 34px; height: 34px; background: var(--teal);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .chat-name { font-family: 'Michroma', sans-serif; font-size: 0.68rem; color: var(--bone); letter-spacing: 0.04em; }
+    .chat-status { font-size: 0.6rem; color: rgba(245,241,234,0.45); letter-spacing: 0.06em; margin-top: 0.2rem; }
+    .chat-header-btns { display: flex; align-items: center; gap: 0.5rem; }
+    .chat-hbtn {
+      background: none; border: none; cursor: pointer;
+      color: rgba(245,241,234,0.5); padding: 0.2rem;
+      line-height: 1; transition: color 0.2s;
+    }
+    .chat-hbtn:hover { color: var(--bone); }
+    .chat-messages {
+      height: 300px; overflow-y: auto; padding: 1.1rem 1.1rem 0.5rem;
+      display: flex; flex-direction: column; gap: 0.75rem;
+    }
+    .chat-messages::-webkit-scrollbar { width: 4px; }
+    .chat-messages::-webkit-scrollbar-thumb { background: rgba(46,111,137,0.25); }
+    .chat-bubble {
+      max-width: 85%; padding: 0.65rem 0.9rem;
+      font-family: 'Inter', sans-serif; font-size: 0.78rem;
+      font-weight: 300; line-height: 1.65;
+    }
+    .chat-bubble.bot {
+      background: #ffffff; color: var(--ink);
+      border-left: 2px solid var(--teal); align-self: flex-start;
+    }
+    .chat-bubble.user {
+      background: var(--teal); color: var(--bone); align-self: flex-end;
+    }
+    .chat-quick-replies {
+      padding: 0.75rem 1.1rem 0.5rem;
+      display: flex; flex-wrap: wrap; gap: 0.45rem;
+    }
+    .chat-qr {
+      font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 500;
+      letter-spacing: 0.07em; text-transform: uppercase;
+      border: 1px solid rgba(46,111,137,0.4); color: var(--teal);
+      background: transparent; padding: 0.3rem 0.7rem; cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .chat-qr:hover { background: var(--teal); color: var(--bone); border-color: var(--teal); }
+    .chat-input-row {
+      display: flex; border-top: 1px solid rgba(26,26,26,0.08); flex-shrink: 0;
+    }
+    .chat-inp {
+      flex: 1; border: none; background: #ffffff; padding: 0.8rem 1rem;
+      font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 300;
+      color: var(--ink); outline: none;
+    }
+    .chat-inp::placeholder { color: rgba(26,26,26,0.3); }
+    .chat-send-btn {
+      border: none; background: var(--teal); color: var(--bone);
+      padding: 0 1.1rem; cursor: pointer; font-size: 1rem;
+      transition: background 0.2s;
+    }
+    .chat-send-btn:hover { background: var(--teal-light); }
+    @media (max-width: 767px) {
+      .chat-toggle { bottom: 11rem; right: 1.25rem; }
+      .chat-window { bottom: 15rem; right: 1.25rem; width: calc(100vw - 2.5rem); }
+    }
+
+    /* ─── POPIA BANNER ─── */
+    .popia-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 8997;
+      background: rgba(22,22,22,0.97); backdrop-filter: blur(10px);
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 0.85rem 3.5rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+    }
+    .popia-text {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem; font-weight: 300; color: rgba(245,241,234,0.48); line-height: 1.65;
+    }
+    .popia-text a { color: var(--mist); text-decoration: none; border-bottom: 1px solid rgba(160,194,196,0.3); }
+    .popia-text a:hover { color: var(--bone); }
+    .popia-dismiss {
+      flex-shrink: 0; background: none; cursor: pointer;
+      border: 1px solid rgba(245,241,234,0.18); color: rgba(245,241,234,0.45);
+      font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase; padding: 0.4rem 0.9rem;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+    .popia-dismiss:hover { border-color: rgba(245,241,234,0.45); color: var(--bone); }
+    @media (max-width: 767px) {
+      .popia-bar { bottom: 70px; padding: 0.85rem 1.25rem; flex-wrap: wrap; gap: 0.75rem; }
+    }
+
+    /* ─── CONTACT PAGE ─── */
+    .contact-page {
+      position: fixed; inset: 0; z-index: 500;
+      background: var(--teal);
+      overflow-y: auto; overflow-x: hidden;
+      opacity: 0; pointer-events: none;
+      transform: translateX(48px);
+      transition: opacity 0.42s ease, transform 0.42s ease;
+    }
+    .contact-page.open { opacity: 1; pointer-events: all; transform: translateX(0); }
+    .contact-page::before {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background:
+        radial-gradient(ellipse 55% 100% at 100% 50%, rgba(60,139,153,0.45) 0%, transparent 60%),
+        radial-gradient(ellipse 35% 80% at 0% 50%, rgba(21,47,61,0.35) 0%, transparent 55%);
+    }
+    /* ─── OVERLAY NAV BAR ─── */
+    .overlay-nav-bar {
+      position: sticky; top: 0; z-index: 10; width: 100%;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 1.5rem;
+      background: rgba(21,47,61,0.45); backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(245,241,234,0.08);
+      padding: 0.85rem 6rem;
+    }
+    .onb-back {
+      display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0;
+      background: none; border: none; cursor: pointer;
+      font-family: 'Inter', sans-serif; font-size: 0.68rem;
+      font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(245,241,234,0.5);
+      transition: color 0.2s ease;
+    }
+    .onb-back:hover { color: rgba(245,241,234,0.9); }
+    .onb-links { display: flex; align-items: center; gap: 0.85rem; list-style: none; }
+    .onb-links a {
+      display: block;
+      font-family: 'Michroma', sans-serif; font-size: 0.68rem; font-weight: 400;
+      letter-spacing: 0.1em; text-transform: uppercase; text-decoration: none;
+      -webkit-text-stroke: 0.4px currentColor;
+      color: rgba(245,241,234,0.55);
+      border: 1.5px solid rgba(245,241,234,0.2);
+      background: rgba(12,28,40,0.2); backdrop-filter: blur(4px);
+      padding: 0.4rem 0.9rem;
+      transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+    .onb-links a:hover {
+      color: var(--bone);
+      border-color: rgba(245,241,234,0.5);
+      background: rgba(46,111,137,0.45);
+    }
+    .onb-links a.active {
+      color: var(--bone);
+      border-color: rgba(245,241,234,0.6);
+      background: rgba(46,111,137,0.6);
+      pointer-events: none; cursor: default;
+    }
+    .contact-page-inner {
+      max-width: 1280px; margin: 0 auto; padding: 4.5rem 3.5rem 6rem;
+      position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1fr 1.2fr; gap: 6rem; align-items: start;
+    }
+    @media (max-width: 1100px) { .contact-page-inner { grid-template-columns: 1fr; gap: 3.5rem; } }
+    @media (max-width: 768px) {
+      .contact-back-btn { padding: 0.9rem 1.5rem; }
+      .contact-page-inner { padding: 3rem 1.5rem 5rem; }
+    }
+
+    /* ─── SERVICES PAGE overrides (light background) ─── */
+    #servicesPage { background: var(--bone-dark); }
+    #servicesPage::before { background: none; }
+    #servicesPage .overlay-nav-bar,
+    #teamPage .overlay-nav-bar {
+      background: rgba(237,232,223,0.88); border-bottom-color: rgba(26,26,26,0.08);
+    }
+    #servicesPage .onb-back,
+    #teamPage .onb-back { color: var(--ink); }
+    #servicesPage .onb-back:hover,
+    #teamPage .onb-back:hover { color: var(--teal); }
+    #servicesPage .onb-links a,
+    #teamPage .onb-links a {
+      color: var(--ink);
+      border-color: rgba(26,26,26,0.35);
+      background: rgba(237,232,223,0.6);
+    }
+    #servicesPage .onb-links a:hover,
+    #teamPage .onb-links a:hover {
+      color: var(--bone); border-color: var(--teal); background: rgba(46,111,137,0.55);
+    }
+    #servicesPage .onb-links a.active,
+    #teamPage .onb-links a.active {
+      color: var(--bone); border-color: var(--teal); background: var(--teal);
+    }
+
+    .services-page-inner {
+      max-width: 1280px; margin: 0 auto; padding: 4.5rem 3.5rem 6rem;
+      position: relative; z-index: 1;
+    }
+    @media (max-width: 768px) { .services-page-inner { padding: 3rem 1.5rem 5rem; } }
+
+    /* ─── STORY PAGE overrides (dark split background) ─── */
+    #storyPage { background: var(--ink); }
+    #storyPage::before { background: none; }
+    .story-page-inner {
+      min-height: calc(100vh - 50px);
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 1100px) { .story-page-inner { grid-template-columns: 1fr; } }
+
+    /* ─── TEAM PAGE overrides (light background) ─── */
+    #teamPage { background: var(--bone); }
+    #teamPage::before {
+      background:
+        radial-gradient(ellipse 60% 60% at 100% 0%, rgba(46,111,137,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 50% at 0% 100%, rgba(46,111,137,0.05) 0%, transparent 55%);
+    }
+    .team-page-inner {
+      max-width: 1280px; margin: 0 auto; padding: 4.5rem 3.5rem 6rem;
+      position: relative; z-index: 1;
+    }
+    @media (max-width: 768px) { .team-page-inner { padding: 3rem 1.5rem 5rem; } }
+
+    /* ─── TESTIMONIAL ─── */
+    .testimonial-section { background: var(--ink); padding: 7rem 3.5rem; }
+    .testimonial-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 2fr; gap: 6rem; align-items: center;
+    }
+    .testimonial-quote-wrap {
+      position: relative; padding-left: 3rem;
+      border-left: 2px solid rgba(160,194,196,0.25);
+    }
+    .testimonial-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.4rem, 2.2vw, 2rem); font-weight: 300; font-style: italic;
+      line-height: 1.55; color: var(--bone); margin-bottom: 2rem; letter-spacing: -0.01em;
+    }
+    .testimonial-author { display: flex; align-items: center; gap: 1.25rem; }
+    .testimonial-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--teal); display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .testimonial-avatar span {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 600; color: var(--bone);
+    }
+    .testimonial-name {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem; font-weight: 600; color: var(--bone); letter-spacing: 0.04em;
+    }
+    .testimonial-role {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.72rem; font-weight: 300;
+      color: rgba(245,241,234,0.5); letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    @media (max-width: 1100px) { .testimonial-inner { grid-template-columns: 1fr; gap: 3.5rem; } }
+    @media (max-width: 768px) { .testimonial-section { padding: 5rem 1.5rem; } }
+  </style>
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav class="nav" id="mainNav">
+    <div class="nav-left">
+      <a href="#" class="nav-logo">
+        <img src="brand_assets/Indwe_Logo_1.png" alt="INDWE Agency">
+      </a>
+      <span class="nav-brand-text">INDWE AGENCY</span>
+      <span class="nav-brand-sep">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+      <p class="nav-tagline">Warehousing &amp; Distribution<span class="nav-sep">&nbsp;|&nbsp;</span>KwaZulu-Natal &amp; Transkei</p>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#" onclick="openServices(event)">Services</a></li>
+      <li><a href="#" onclick="openStory(event)">Our Story</a></li>
+      <li><a href="#" onclick="openTeam(event)">Our Team</a></li>
+      <li><a href="#" onclick="openContact(event)">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero" id="hero">
+
+    <!-- Fullbleed image slider -->
+    <div class="hero-slider" id="heroSlider">
+      <div class="hero-slide active" style="background-image: url('brand_assets/Indwe-Truck-4.png'); background-size: cover; background-position: center; transform: scaleX(-1);"></div>
+      <div class="hero-slide"        style="background-image: url('brand_assets/Indwe-Truck-2.png');"></div>
+      <div class="hero-slide"        style="background-image: url('brand_assets/Indwe-Truck-3.png');"></div>
+    </div>
+
+    <!-- Overlay layers -->
+    <div class="hero-overlay"></div>
+    <div class="hero-noise"></div>
+
+    <div class="hero-content">
+      <h1 class="hero-headline">
+        <span class="line"><span class="word"><em>From Africa's</em></span></span>
+        <span class="line"><span class="word"><strong>Gateway,</strong></span></span>
+        <span class="line"><span class="word"><em>To Every</em></span></span>
+        <span class="line"><span class="word"><strong>Door.</strong></span></span>
+      </h1>
+      <p class="hero-sub">
+        Over 25 years of dedicated warehousing and distribution expertise in the FMCG sector. Serving KwaZulu-Natal, Transkei, and surrounding areas from our base in Glen Anil, Durban.
+      </p>
+      <div class="hero-actions">
+        <a href="#" onclick="openContact(event)" class="btn-primary">Get a Quote &nbsp;→</a>
+        <a href="#" onclick="openServices(event)" class="btn-ghost">Our Services &nbsp;→</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll" id="heroScroll">
+      <div class="hero-scroll-line"></div>
+      <span class="hero-scroll-text">Scroll to explore</span>
+    </div>
+
+    <!-- Slider navigation -->
+    <button class="slider-arrow slider-arrow-prev" id="sliderPrev" aria-label="Previous slide">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="slider-arrow slider-arrow-next" id="sliderNext" aria-label="Next slide">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+    <div class="slider-dots" id="sliderDots">
+      <button class="slider-dot active" data-index="0" aria-label="Slide 1"></button>
+      <button class="slider-dot"        data-index="1" aria-label="Slide 2"></button>
+      <button class="slider-dot"        data-index="2" aria-label="Slide 3"></button>
+    </div>
+
+  </section>
+
+  <!-- ── MARQUEE ── -->
+  <div class="marquee-band">
+    <div class="marquee-track">
+      <div class="marquee-item">
+        <span class="marquee-text">Warehousing</span><span class="marquee-sep">◆</span>
+        <span class="marquee-text">Distribution</span><span class="marquee-sep">◆</span>
+        <span class="marquee-text">FMCG Specialists</span><span class="marquee-sep">◆</span>
+        <span class="marquee-text">KwaZulu-Natal</span><span class="marquee-sep">◆</span>
+        <span class="marquee-text">Transkei</span><span class="marquee-sep">◆</span>
+        <span class="marquee-text">25 Years Experience</span><span class="marquee-sep">◆</span>
+        <span class="marquee-text">Glen Anil, Durban</span><span class="marquee-sep">◆</span>
+        <span class="marquee-text">~1,000 Tons Per Month</span><span class="marquee-sep">◆</span>
+      </div>
+      <div class="marquee-item" aria-hidden="true">
+        <span class="marquee-text">Warehousing</span><span class="marquee-sep">◆</span>
+        <span class="marquee-text">Distribution</span><span class="marquee-sep">◆</span>
+        <span class="marquee-text">FMCG Specialists</span><span class="marquee-sep">◆</span>
+        <span class="marquee-text">KwaZulu-Natal</span><span class="marquee-sep">◆</span>
+        <span class="marquee-text">Transkei</span><span class="marquee-sep">◆</span>
+        <span class="marquee-text">25 Years Experience</span><span class="marquee-sep">◆</span>
+        <span class="marquee-text">Glen Anil, Durban</span><span class="marquee-sep">◆</span>
+        <span class="marquee-text">~1,000 Tons Per Month</span><span class="marquee-sep">◆</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STATS ── -->
+  <section class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <div class="stat-number">
+          <span class="count" data-target="25">0</span><sup>+</sup>
+        </div>
+        <div class="stat-label">Years in the<br>FMCG Environment</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number">
+          <span class="count" data-target="1000">0</span><span class="unit"> t</span>
+        </div>
+        <div class="stat-label">Tons Distributed<br>Per Month</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number">
+          <span class="count" data-target="3">0</span>
+        </div>
+        <div class="stat-label">Leading FMCG Partners<br>in South Africa</div>
+      </div>
+      <div class="stat-item reveal">
+        <div class="stat-number">
+          <span class="count" data-target="15">0</span><sup>+</sup>
+        </div>
+        <div class="stat-label">Years — Longest<br>Client Partnership</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SERVICES PAGE (overlay) ── -->
+  <div id="servicesPage" class="contact-page" role="dialog" aria-label="Services">
+    <div class="overlay-nav-bar">
+      <button class="onb-back" onclick="closeServices()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <ul class="onb-links">
+        <li><a class="active">Services</a></li>
+        <li><a href="#" onclick="switchOverlay('story',event)">Our Story</a></li>
+        <li><a href="#" onclick="switchOverlay('team',event)">Our Team</a></li>
+
+        <li><a href="#" onclick="switchOverlay('contact',event)">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="services-page-inner">
+      <div class="services-header" style="margin-bottom: 3.5rem;">
+        <div>
+          <p class="section-label" style="color: var(--teal);">Our Services</p>
+          <h2 class="section-heading" style="color: var(--ink); margin-top: 0.9rem;">
+            Complete logistics<br><em>solutions, built<br>for your business.</em>
+          </h2>
+        </div>
+        <p class="services-header-desc">
+          Dedicated, professional, and focused warehousing and distribution for business partners across KwaZulu-Natal, Transkei, and surrounding areas — tailored to your specific needs.
+        </p>
+      </div>
+      <div class="services-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="service-card">
+          <img class="service-icon" src="brand_assets/icon-distribution.png" alt="Distribution">
+          <h3 class="service-title">Distribution</h3>
+          <p class="service-body" style="margin-bottom: 1.5rem;">Efficient and reliable distribution across KwaZulu-Natal, Transkei, and surrounding areas. With over 25 years in the FMCG environment, we move approximately 1,000 tons per month for three of South Africa's leading consumer goods companies.</p>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.55rem;">
+            <li style="font-size: 0.85rem; font-weight: 300; color: var(--ink); display: flex; align-items: center; gap: 0.65rem;"><span style="color: var(--teal); font-size: 0.6rem;">◆</span> KwaZulu-Natal &amp; Transkei coverage</li>
+            <li style="font-size: 0.85rem; font-weight: 300; color: var(--ink); display: flex; align-items: center; gap: 0.65rem;"><span style="color: var(--teal); font-size: 0.6rem;">◆</span> FMCG specialist — consumer goods expertise</li>
+            <li style="font-size: 0.85rem; font-weight: 300; color: var(--ink); display: flex; align-items: center; gap: 0.65rem;"><span style="color: var(--teal); font-size: 0.6rem;">◆</span> ~1,000 tons distributed per month</li>
+          </ul>
+        </div>
+        <div class="service-card">
+          <img class="service-icon" src="brand_assets/icon-warehousing.png" alt="Warehousing">
+          <h3 class="service-title">Warehousing</h3>
+          <p class="service-body" style="margin-bottom: 1.5rem;">Secure and efficient warehousing with a comprehensive solution tailored to your specific needs. Operating from our facility at Ensor Industrial Park in Glen Anil, Durban, we provide the infrastructure your business can depend on.</p>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.55rem;">
+            <li style="font-size: 0.85rem; font-weight: 300; color: var(--ink); display: flex; align-items: center; gap: 0.65rem;"><span style="color: var(--teal); font-size: 0.6rem;">◆</span> Secure, purpose-built storage facilities</li>
+            <li style="font-size: 0.85rem; font-weight: 300; color: var(--ink); display: flex; align-items: center; gap: 0.65rem;"><span style="color: var(--teal); font-size: 0.6rem;">◆</span> Solutions tailored to your requirements</li>
+            <li style="font-size: 0.85rem; font-weight: 300; color: var(--ink); display: flex; align-items: center; gap: 0.65rem;"><span style="color: var(--teal); font-size: 0.6rem;">◆</span> Strategically located in Glen Anil, Durban</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── OUR STORY PAGE (overlay) ── -->
+  <div id="storyPage" class="contact-page" role="dialog" aria-label="Our Story">
+    <div class="overlay-nav-bar">
+      <button class="onb-back" onclick="closeStory()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <ul class="onb-links">
+        <li><a href="#" onclick="switchOverlay('services',event)">Services</a></li>
+        <li><a class="active">Our Story</a></li>
+        <li><a href="#" onclick="switchOverlay('team',event)">Our Team</a></li>
+
+        <li><a href="#" onclick="switchOverlay('contact',event)">Contact Us</a></li>
+      </ul>
+    </div>
+    <div class="story-page-inner">
+      <div class="about-left">
+        <p class="section-label" style="color: var(--mist); margin-bottom: 0.9rem;">Our Heritage</p>
+        <h2 class="section-heading" style="color: var(--bone); margin-bottom: 2rem; margin-top: 0.9rem;">
+          More than logistics.<br><em>A trusted partner<br>for what matters.</em>
+        </h2>
+        <p style="font-size: 0.9rem; font-weight: 300; line-height: 1.9; color: rgba(245,241,234,0.55); margin-bottom: 1.5rem;">
+          INDWE Agency provides a dedicated, professional, and focused warehousing and distribution service on behalf of business partners within KwaZulu-Natal, Transkei, and surrounding areas.
+        </p>
+        <p style="font-size: 0.9rem; font-weight: 300; line-height: 1.9; color: rgba(245,241,234,0.55); margin-bottom: 3rem;">
+          With over 25 years of experience in the FMCG environment, we have built lasting partnerships with three of South Africa's leading consumer goods companies. Operating from Ensor Industrial Park in Glen Anil, Durban, our name honours the ibis that navigates vast distances with unerring instinct — a commitment to finding the most efficient path for your cargo, every time.
+        </p>
+        <div style="display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+          <a href="#" onclick="openContact(event)" class="btn-primary">Get a Quote &nbsp;→</a>
+          <a href="brand_assets/INDWE-Company-Profile.pdf" download class="btn-dl">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Company Profile
+          </a>
+        </div>
+      </div>
+      <div class="about-right">
+        <div class="about-right-content">
+          <p class="section-label" style="color: var(--mist); margin-bottom: 0.9rem;">Why It Matters</p>
+          <h3 class="section-heading" style="color: var(--bone); margin-bottom: 2rem; margin-top: 0.9rem;">
+            25 years of focus.<br>One region. One speciality.
+          </h3>
+          <div class="check-list">
+            <div class="check-item">
+              <div class="check-circle">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#A0C2C4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div>
+                <p class="check-title">Deep FMCG Expertise</p>
+                <p class="check-body">Over 25 years operating exclusively in the FMCG environment — we understand the demands, timelines, and standards your category requires.</p>
+              </div>
+            </div>
+            <div class="check-item">
+              <div class="check-circle">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#A0C2C4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div>
+                <p class="check-title">Trusted by Market Leaders</p>
+                <p class="check-body">Three of South Africa's leading FMCG companies trust INDWE to warehouse and distribute their product — some for over 15 years continuously.</p>
+              </div>
+            </div>
+            <div class="check-item">
+              <div class="check-circle">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#A0C2C4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div>
+                <p class="check-title">Glen Anil, Durban — Strategically Located</p>
+                <p class="check-body">Based at Ensor Industrial Park, we're positioned to serve KZN and Transkei distribution routes with speed and efficiency.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── TEAM PAGE (overlay) ── -->
+  <div id="teamPage" class="contact-page" role="dialog" aria-label="Our Team">
+
+    <div class="overlay-nav-bar">
+      <button class="onb-back" onclick="closeTeam()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <ul class="onb-links">
+        <li><a href="#" onclick="switchOverlay('services',event)">Services</a></li>
+        <li><a href="#" onclick="switchOverlay('story',event)">Our Story</a></li>
+        <li><a class="active">Our Team</a></li>
+
+        <li><a href="#" onclick="switchOverlay('contact',event)">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <div class="team-page-inner">
+      <p class="section-label" style="color: var(--teal);">Our Team</p>
+      <h2 class="section-heading" style="color: var(--ink); max-width: 480px; margin-top: 0.9rem; margin-bottom: 3.5rem;">
+        The people behind<br><em>every delivery.</em>
+      </h2>
+      <div class="team-grid">
+
+        <div class="team-card">
+          <div class="team-avatar"><span>—</span></div>
+          <p class="team-name">Team Member</p>
+          <p class="team-role">Role / Title</p>
+          <p class="team-bio">Bio coming soon. Replace this card with your team member's name, role, and a short description.</p>
+        </div>
+
+        <div class="team-card">
+          <div class="team-avatar"><span>—</span></div>
+          <p class="team-name">Team Member</p>
+          <p class="team-role">Role / Title</p>
+          <p class="team-bio">Bio coming soon. Replace this card with your team member's name, role, and a short description.</p>
+        </div>
+
+        <div class="team-card">
+          <div class="team-avatar"><span>—</span></div>
+          <p class="team-name">Team Member</p>
+          <p class="team-role">Role / Title</p>
+          <p class="team-bio">Bio coming soon. Replace this card with your team member's name, role, and a short description.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── WHY INDWE ── -->
+  <section class="why-section">
+    <div style="max-width: 1280px; margin: 0 auto;">
+      <p class="section-label reveal" style="color: var(--teal);">Why INDWE</p>
+      <h2 class="section-heading reveal" style="color: var(--ink); max-width: 480px;">
+        The difference that<br><em>precision makes.</em>
+      </h2>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal">
+        <div class="why-num">01</div>
+        <h3 class="why-title">25 Years of FMCG Focus</h3>
+        <p class="why-body">We don't try to do everything. For over 25 years we have focused specifically on warehousing and distribution in the FMCG sector — and we've become very good at it.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">02</div>
+        <h3 class="why-title">Dedicated &amp; Professional Service</h3>
+        <p class="why-body">We operate as a true business partner — not just a service provider. Our team understands your product, your schedules, and what it takes to keep shelves stocked.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">03</div>
+        <h3 class="why-title">Regional Coverage You Can Count On</h3>
+        <p class="why-body">Extensive distribution network across KwaZulu-Natal and Transkei. We know these routes, the retailers, and how to move ~1,000 tons of product reliably every month.</p>
+      </div>
+      <div class="why-card reveal">
+        <div class="why-num">04</div>
+        <h3 class="why-title">Outstanding Customer Service</h3>
+        <p class="why-body">Long-standing partnerships speak for themselves — our longest client has been with us for over 15 years. We earn that loyalty through consistent, responsive, outstanding service.</p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ── COVERAGE ── -->
+  <section class="coverage-section" id="coverage">
+    <div class="coverage-noise"></div>
+    <div class="coverage-inner">
+      <div>
+        <p class="section-label reveal" style="color: var(--mist);">Distribution Reach</p>
+        <h2 class="section-heading reveal" style="color: var(--bone); margin-bottom: 1.5rem;">
+          Where we<br><em>move the world.</em>
+        </h2>
+        <p class="reveal" style="font-size: 0.88rem; font-weight: 300; line-height: 1.85; color: rgba(245,241,234,0.55); max-width: 400px; margin-bottom: 3rem;">
+          From our base at Ensor Industrial Park in Glen Anil, Durban, INDWE services KwaZulu-Natal, Transkei, and surrounding areas with reliable, consistent distribution.
+        </p>
+        <a href="#" onclick="openContact(event)" class="btn-bone reveal">Plan Your Route &nbsp;→</a>
+      </div>
+
+      <div class="reveal">
+        <div class="coverage-list">
+          <div class="coverage-row">
+            <div class="coverage-dot primary"></div>
+            <span class="coverage-name">KwaZulu-Natal</span>
+            <span class="coverage-detail">Primary Operations Hub</span>
+          </div>
+          <div class="coverage-row">
+            <div class="coverage-dot primary"></div>
+            <span class="coverage-name">Transkei</span>
+            <span class="coverage-detail">Full Distribution Coverage</span>
+          </div>
+          <div class="coverage-row">
+            <div class="coverage-dot"></div>
+            <span class="coverage-name">Surrounding Areas</span>
+            <span class="coverage-detail">Adjacent regions served</span>
+          </div>
+          <div class="coverage-row">
+            <div class="coverage-dot"></div>
+            <span class="coverage-name">Glen Anil, Durban</span>
+            <span class="coverage-detail">Warehouse &amp; Operations Base</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Coverage map + facility location tabs -->
+    <div class="coverage-map-wrap reveal" style="max-width:1280px;margin:0 auto;position:relative;z-index:1;">
+      <div class="map-tabs-bar">
+        <button class="map-tab-btn active" data-tab="facility">Our Facility</button>
+        <button class="map-tab-btn" data-tab="coverage">Distribution Reach</button>
+      </div>
+      <div class="map-panel" id="panelCoverage" style="margin-top:1.5rem;">
+        <div id="coverageMap"></div>
+      </div>
+      <div class="map-panel active" id="panelFacility" style="margin-top:1.5rem;">
+        <div id="facilityMap">
+          <iframe
+            src="https://maps.google.com/maps?q=Ensor+Industrial+Park,+21+Donald+Ensor+Road,+Glen+Anil,+Durban,+South+Africa&output=embed&z=16"
+            title="INDWE Agency — Ensor Industrial Park, Glen Anil, Durban"
+            allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TRUCK PHOTO (standalone) ── -->
+  <div class="truck-standalone">
+    <div class="truck-standalone-text">
+      <p>
+        <span class="tbl"><em>No Project</em></span>
+        <span class="tbl"><strong>Too Big</strong></span>
+        <span class="tbl"><em>Or Too</em></span>
+        <span class="tbl"><strong>Small.</strong></span>
+      </p>
+    </div>
+  </div>
+
+  <!-- ── CONTACT PAGE (overlay) ── -->
+  <div id="contactPage" class="contact-page" role="dialog" aria-label="Contact Us">
+
+    <div class="overlay-nav-bar">
+      <button class="onb-back" onclick="closeContact()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <ul class="onb-links">
+        <li><a href="#" onclick="switchOverlay('services',event)">Services</a></li>
+        <li><a href="#" onclick="switchOverlay('story',event)">Our Story</a></li>
+        <li><a href="#" onclick="switchOverlay('team',event)">Our Team</a></li>
+
+        <li><a class="active">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <div class="contact-page-inner">
+
+      <!-- Contact info side -->
+      <div>
+        <p class="section-label" style="color: var(--mist); margin-bottom: 0.75rem;">Contact Us</p>
+        <div class="biz-status" id="bizStatus" style="margin-bottom: 1.2rem;">
+          <span class="biz-dot" id="bizDot"></span>
+          <span id="bizText"></span>
+        </div>
+        <h2 class="cta-headline" style="margin-top:0;">
+          Ready to move<br><em>your cargo<br>with confidence?</em>
+        </h2>
+        <p class="cta-sub" style="margin-bottom: 2.5rem;">
+          Speak with our team about your warehousing and distribution requirements. We respond within one business day.
+        </p>
+        <div style="display: flex; flex-direction: column; gap: 1.1rem;">
+          <a href="tel:0315692378" class="cta-contact-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38a2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.02z"/></svg>
+            (031) 569 2378
+          </a>
+          <a href="mailto:indweagency@mweb.co.za" class="cta-contact-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            indweagency@mweb.co.za
+          </a>
+          <a href="https://wa.me/27315692378" target="_blank" rel="noopener" class="cta-contact-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <div class="cta-contact-link" style="cursor: default; align-items: flex-start;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:0.12rem"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Unit 112, Ensor Industrial Park,<br>21 Donald Ensor Road, Glen Anil, Durban</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quote form side -->
+      <div>
+        <form id="quoteForm" novalidate>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-lbl" for="qName">Your Name</label>
+              <input class="form-inp" type="text" id="qName" name="name" placeholder="Full name" required>
+            </div>
+            <div class="form-group">
+              <label class="form-lbl" for="qCompany">Company</label>
+              <input class="form-inp" type="text" id="qCompany" name="company" placeholder="Company name" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-lbl" for="qPhone">Phone</label>
+              <input class="form-inp" type="tel" id="qPhone" name="phone" placeholder="+27 ...">
+            </div>
+            <div class="form-group">
+              <label class="form-lbl" for="qEmail">Email Address</label>
+              <input class="form-inp" type="email" id="qEmail" name="email" placeholder="you@example.com" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-lbl" for="qVolume">Approx. Monthly Volume</label>
+              <input class="form-inp" type="text" id="qVolume" name="volume" placeholder="e.g. 50 tons">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-lbl">Service Required</label>
+            <div class="radio-group">
+              <label class="radio-item"><input type="radio" name="service" value="Distribution"><span>Distribution</span></label>
+              <label class="radio-item"><input type="radio" name="service" value="Warehousing"><span>Warehousing</span></label>
+              <label class="radio-item"><input type="radio" name="service" value="Both" checked><span>Both</span></label>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-lbl" for="qMessage">What Can We Help You With?</label>
+            <textarea class="form-txt" id="qMessage" name="message" placeholder="Coverage area, product type, specific requirements…"></textarea>
+          </div>
+          <button type="submit" class="btn-bone" style="width:100%;justify-content:center;margin-top:0.4rem;">Send Quote Request &nbsp;→</button>
+          <div class="form-success" id="formSuccess">
+            Your enquiry has been prepared — your email client will open with the details pre-filled. If it doesn't open automatically, email us at indweagency@mweb.co.za.
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── TESTIMONIAL ── -->
+  <section class="testimonial-section">
+    <div class="testimonial-inner">
+      <div>
+        <p class="section-label reveal" style="color: var(--mist);">What Clients Say</p>
+        <h2 class="section-heading reveal" style="color: var(--bone);">
+          Partnerships<br>built on<br><em>consistency.</em>
+        </h2>
+      </div>
+      <div class="testimonial-quote-wrap reveal">
+        <svg style="position: absolute; top: -0.5rem; left: -0.2rem; width: 2.5rem; height: 2.5rem; color: var(--mist); opacity: 0.5;" viewBox="0 0 48 48" fill="currentColor">
+          <path d="M14 8C9 12 6 18 6 24v14h14V24H10c0-5 2-9 6-12l-2-4zm24 0c-5 4-8 10-8 16v14h14V24H34c0-5 2-9 6-12l-2-4z"/>
+        </svg>
+        <p class="testimonial-quote">
+          "INDWE Agency has been our KZN warehousing and distribution partner for 15+ years. Their expertise keeps our shelves stocked and sales soaring. Outstanding customer service too!"
+        </p>
+        <div class="testimonial-author">
+          <div class="testimonial-avatar"><span>M</span></div>
+          <div>
+            <p class="testimonial-name">Michael Ndlovu</p>
+            <p class="testimonial-role">FMCG Client — 15+ Year Partnership</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-col-brand">
+        <img src="brand_assets/Indwe_Logo_1.png" alt="INDWE Agency" class="footer-logo">
+        <p class="footer-tagline">"From Warehouse to Destination: We've Got Logistics Covered."</p>
+        <!-- Update hrefs to your actual social media profiles -->
+        <div class="social-links">
+          <a href="#" class="social-link" aria-label="Facebook">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="LinkedIn">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="Instagram">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <p class="footer-col-title">Services</p>
+        <ul class="footer-col-links">
+          <li><a href="#" onclick="openServices(event)">Distribution</a></li>
+          <li><a href="#" onclick="openServices(event)">Warehousing</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="footer-col-title">Company</p>
+        <ul class="footer-col-links">
+          <li><a href="#" onclick="openStory(event)">About INDWE</a></li>
+          <li><a href="#" onclick="openTeam(event)">Our Team</a></li>
+          <li><a href="#coverage">Coverage Areas</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">News &amp; Insights</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <p class="footer-col-title">Client Access</p>
+        <ul class="footer-col-links">
+          <li><a href="#" onclick="openContact(event)">Get a Quote</a></li>
+          <li><a href="#">Client Portal</a></li>
+          <li><a href="#">Track Shipment</a></li>
+          <li><a href="#" onclick="openContact(event)">Support</a></li>
+        </ul>
+        <div style="margin-top: 2.25rem;">
+          <p class="footer-col-title">Also Reach Us</p>
+          <p class="footer-reg">Fax: (031) 569 1933<br>eFax: 0866 718 696</p>
+        </div>
+      </div>
+
+      <div>
+        <p class="footer-col-title">Get In Touch</p>
+        <ul class="footer-col-links">
+          <li><a href="mailto:indweagency@mweb.co.za">indweagency@mweb.co.za</a></li>
+          <li><a href="tel:0315692378">(031) 569 2378</a></li>
+          <li><a href="https://maps.google.com/maps?q=Ensor+Industrial+Park,+21+Donald+Ensor+Road,+Glen+Anil,+Durban" target="_blank" rel="noopener">Unit 112, Ensor Industrial Park</a></li>
+          <li><a href="https://maps.google.com/maps?q=Ensor+Industrial+Park,+21+Donald+Ensor+Road,+Glen+Anil,+Durban" target="_blank" rel="noopener">21 Donald Ensor Road, Glen Anil, Durban</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-legal">© 2026 INDWE Agency. All rights reserved.</p>
+      <p class="footer-domain">indweagency.co.za</p>
+    </div>
+  </footer>
+
+
+  <!-- ── CHATBOT ── -->
+  <div class="chat-badge" id="chatBadge">1</div>
+  <button class="chat-toggle" id="chatToggle" aria-label="Open INDWE Assistant">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+  </button>
+
+  <div class="chat-window" id="chatWindow">
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <div class="chat-avatar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div>
+          <div class="chat-name">INDWE Assistant</div>
+          <div class="chat-status">Ask us anything</div>
+        </div>
+      </div>
+      <div class="chat-header-btns">
+        <button class="chat-hbtn" id="chatClear" aria-label="Clear chat" title="Clear chat">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>
+        <button class="chat-hbtn" id="chatMinimise" aria-label="Minimise">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button class="chat-hbtn" id="chatClose" aria-label="Close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-quick-replies" id="chatQuickReplies"></div>
+    <div class="chat-input-row">
+      <input class="chat-inp" id="chatInput" type="text" placeholder="Type your question…" autocomplete="off">
+      <button class="chat-send-btn" id="chatSendBtn" aria-label="Send">&#8594;</button>
+    </div>
+  </div>
+
+  <!-- WhatsApp floating button -->
+  <a href="https://wa.me/27315692378" class="wa-float" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  </a>
+
+  <!-- Mobile sticky call bar -->
+  <div class="mob-bar">
+    <a href="tel:0315692378" class="mob-call">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38a2 2 0 0 1 1.99-2.18h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6 6l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7a2 2 0 0 1 1.72 2.02z"/></svg>
+      Call Now
+    </a>
+    <a href="mailto:indweagency@mweb.co.za" class="mob-email">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      Email Us
+    </a>
+  </div>
+
+  <script>
+    gsap.registerPlugin(ScrollTrigger);
+
+    // ── NAV scroll state ──
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // ── HERO entrance ──
+    const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+    heroTl
+      .to('.hero-headline .word', {
+        y: '0%', duration: 1.05, stagger: 0.13, ease: 'power3.out', delay: 0.2
+      })
+      .to('.hero-sub',     { opacity: 1, duration: 0.8 }, '-=0.5')
+      .to('.hero-actions', { opacity: 1, duration: 0.8 }, '-=0.55')
+      .to('#heroScroll',   { opacity: 1, duration: 0.8 }, '-=0.4');
+
+    // ── General scroll reveals ──
+    gsap.utils.toArray('.reveal').forEach(el => {
+      gsap.to(el, {
+        opacity: 1, y: 0, x: 0, duration: 0.85, ease: 'power2.out',
+        scrollTrigger: {
+          trigger: el, start: 'top 88%',
+          toggleActions: 'play none none none',
+        },
+      });
+    });
+
+    // ── Counting stats ──
+    function animateCounter(el, target, decimal) {
+      const obj = { val: 0 };
+      gsap.to(obj, {
+        val: target, duration: 2.2, ease: 'power2.out',
+        onUpdate() {
+          el.textContent = decimal
+            ? obj.val.toFixed(1)
+            : Math.round(obj.val).toLocaleString();
+        },
+        scrollTrigger: { trigger: el, start: 'top 85%', once: true },
+      });
+    }
+    document.querySelectorAll('.count').forEach(el =>
+      animateCounter(el, parseFloat(el.dataset.target), false)
+    );
+    document.querySelectorAll('.count-decimal').forEach(el =>
+      animateCounter(el, parseFloat(el.dataset.target), true)
+    );
+
+    // ── Service cards stagger ──
+    gsap.utils.toArray('.service-card').forEach((card, i) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(22px)';
+      gsap.to(card, {
+        opacity: 1, y: 0, duration: 0.7, ease: 'power2.out',
+        delay: (i % 3) * 0.08,
+        scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' },
+      });
+    });
+
+    // ── Why cards stagger ──
+    gsap.utils.toArray('.why-card').forEach((card, i) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(18px)';
+      gsap.to(card, {
+        opacity: 1, y: 0, duration: 0.7, ease: 'power2.out',
+        delay: i * 0.1,
+        scrollTrigger: { trigger: card, start: 'top 88%', toggleActions: 'play none none none' },
+      });
+    });
+
+    // ── Hero image slider ──
+    (function () {
+      const slides   = document.querySelectorAll('.hero-slide');
+      const dots     = document.querySelectorAll('.slider-dot');
+      const btnPrev  = document.getElementById('sliderPrev');
+      const btnNext  = document.getElementById('sliderNext');
+      const INTERVAL = 5500;   // ms between auto-advances
+      const PAUSE    = 9000;   // ms to pause after manual interaction
+      let current = 0;
+      let timer;
+
+      function goTo(n) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = ((n % slides.length) + slides.length) % slides.length;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+      }
+
+      function startAuto(delay) {
+        clearInterval(timer);
+        timer = setInterval(() => goTo(current + 1), delay || INTERVAL);
+      }
+
+      function handleManual(n) {
+        goTo(n);
+        startAuto(PAUSE); // longer pause after user interaction before resuming
+      }
+
+      btnPrev.addEventListener('click', () => handleManual(current - 1));
+      btnNext.addEventListener('click', () => handleManual(current + 1));
+      dots.forEach(dot => dot.addEventListener('click', () => handleManual(parseInt(dot.dataset.index))));
+
+      // Pause on hover
+      document.getElementById('hero').addEventListener('mouseenter', () => clearInterval(timer));
+      document.getElementById('hero').addEventListener('mouseleave', () => startAuto());
+
+      startAuto();
+    })();
+
+
+    // ── QUOTE FORM ──
+    const quoteForm = document.getElementById('quoteForm');
+    if (quoteForm) {
+      quoteForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const d        = new FormData(this);
+        const name     = d.get('name')    || '';
+        const company  = d.get('company') || '';
+        const phone    = d.get('phone')   || '';
+        const service  = d.get('service') || 'Both';
+        const volume   = d.get('volume')  || '';
+        const message  = d.get('message') || '';
+        const lines = [
+          `Name: ${name}`,
+          `Company: ${company}`,
+          phone   ? `Phone: ${phone}`                         : '',
+          `Service required: ${service}`,
+          volume  ? `Approximate monthly volume: ${volume}`   : '',
+          message ? `\nDetails:\n${message}`                  : '',
+        ].filter(Boolean).join('\n');
+        const subject = encodeURIComponent(`Quote Request — ${company || name}`);
+        const body    = encodeURIComponent(lines);
+        window.location.href = `mailto:indweagency@mweb.co.za?subject=${subject}&body=${body}`;
+        document.getElementById('formSuccess').style.display = 'block';
+        this.reset();
+      });
+    }
+
+    // ── COVERAGE MAP (Leaflet) — lazy init on first tab click ──
+    let map, coverageMapReady = false;
+    function initCoverageMap() {
+      if (coverageMapReady || typeof L === 'undefined') return;
+      coverageMapReady = true;
+      const OFFICE = [-29.7505, 31.0192]; // Glen Anil, Durban
+
+      const map = L.map('coverageMap', {
+        center: [-30.5, 30.2],
+        zoom: 6,
+        scrollWheelZoom: false,
+        zoomControl: true,
+      });
+
+      // Dark CartoDB tiles — matches the coverage section dark background
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        maxZoom: 19,
+        subdomains: 'abcd',
+      }).addTo(map);
+
+      // KwaZulu-Natal — coastal points follow the actual shoreline (Kosi Bay → Port Edward)
+      // Western boundary follows the Drakensberg escarpment / Free State border
+      const kzn = L.polygon([
+        // East coast: Kosi Bay (KZN/Mozambique border) south to Port Edward
+        [-27.05, 32.82],  // Kosi Bay — KZN's northernmost coastal point
+        [-27.55, 32.62],  // Sodwana Bay area
+        [-28.08, 32.35],  // Lake St Lucia / uMfolozi coast
+        [-28.52, 32.08],  // south of Richards Bay
+        [-28.82, 32.01],  // Richards Bay
+        [-29.10, 31.78],  // heading south toward Durban
+        [-29.60, 31.25],  // north of Durban
+        [-29.87, 31.00],  // Durban
+        [-30.10, 30.88],  // Bluff / Amanzimtoti
+        [-30.40, 30.65],  // south coast
+        [-30.75, 30.44],  // Port Shepstone
+        [-31.05, 30.20],  // Port Edward — Umtamvuna River mouth (KZN/EC border)
+        // Inland: south-west along KZN/EC border toward Drakensberg
+        [-30.72, 29.42],
+        [-30.05, 29.18],  // Southern Drakensberg / KZN–Free State–Lesotho border
+        // Western boundary: Drakensberg north to Mpumalanga
+        [-29.22, 29.35],
+        [-28.40, 29.58],  // Ladysmith area
+        [-27.62, 30.06],
+        [-27.08, 30.58],
+        [-26.88, 31.18],  // KZN/Mpumalanga northern boundary
+        // Northern boundary east to Kosi Bay coast
+        [-26.90, 31.82],
+        [-26.95, 32.44],
+        [-27.05, 32.82],  // close
+      ], {
+        color: '#2E6F89', fillColor: '#2E6F89', fillOpacity: 0.2,
+        weight: 2, opacity: 0.75, dashArray: '6 4',
+      }).addTo(map).bindTooltip('KwaZulu-Natal', { permanent: false, direction: 'center' });
+
+      // Transkei — former homeland, Eastern Cape
+      // North: Umtamvuna River (shared with KZN southern border)
+      // South: Great Kei River mouth (~-32.68, 28.38)
+      const transkei = L.polygon([
+        // Northern coast: Port Edward / Umtamvuna River mouth
+        [-31.05, 30.20],
+        // East coast south to Kei River
+        [-31.40, 29.88],
+        [-31.65, 29.52],  // Port St Johns
+        [-32.02, 29.00],
+        [-32.42, 28.54],
+        [-32.68, 28.38],  // Great Kei River mouth — southern boundary
+        // Inland western boundary heading north
+        [-32.38, 27.88],
+        [-31.92, 27.52],  // western Transkei
+        [-31.38, 27.68],
+        [-30.98, 28.02],
+        [-30.58, 28.48],
+        // Northern inland: follows KZN/EC border back toward coast
+        [-30.38, 28.82],
+        [-30.22, 29.22],
+        [-30.42, 29.68],
+        [-30.72, 29.42],  // joins KZN southern boundary
+        [-31.05, 30.20],  // close
+      ], {
+        color: '#A0C2C4', fillColor: '#A0C2C4', fillOpacity: 0.2,
+        weight: 2, opacity: 0.75, dashArray: '6 4',
+      }).addTo(map).bindTooltip('Transkei', { permanent: false, direction: 'center' });
+
+      // Office marker
+      const pin = L.divIcon({
+        className: '',
+        html: `<div style="width:12px;height:12px;background:#2E6F89;border:2.5px solid #fff;border-radius:50%;box-shadow:0 2px 10px rgba(0,0,0,0.5);"></div>`,
+        iconSize: [12, 12], iconAnchor: [6, 6],
+      });
+      L.marker(OFFICE, { icon: pin }).addTo(map).bindPopup(
+        `<strong style="font-family:Inter,sans-serif;font-size:0.8rem;display:block;margin-bottom:0.25rem;">INDWE Agency</strong>` +
+        `<span style="font-size:0.72rem;color:#666;line-height:1.5;">Unit 112, Ensor Industrial Park<br>21 Donald Ensor Road, Glen Anil, Durban</span>`,
+        { maxWidth: 230 }
+      ).openPopup();
+
+      // Fit map to show both zones with padding
+      const allCoords = [...kzn.getLatLngs()[0], ...transkei.getLatLngs()[0]];
+      map.fitBounds(L.latLngBounds(allCoords), { padding: [28, 28] });
+
+      // Force redraw after layout settles
+      setTimeout(() => map.invalidateSize(), 300);
+    }
+
+    // ── MAP TABS ──
+    document.querySelectorAll('.map-tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.map-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.map-panel').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById('panel' + btn.dataset.tab.charAt(0).toUpperCase() + btn.dataset.tab.slice(1)).classList.add('active');
+        if (btn.dataset.tab === 'coverage') {
+          initCoverageMap();
+          setTimeout(() => map && map.invalidateSize(), 50);
+        }
+      });
+    });
+
+    // ── TEAM PAGE ──
+    function switchOverlay(to, e) {
+      if (e) e.preventDefault();
+      ['servicesPage','storyPage','teamPage','contactPage'].forEach(id => {
+        document.getElementById(id).classList.remove('open');
+      });
+      const map = { services:'servicesPage', story:'storyPage', team:'teamPage', contact:'contactPage' };
+      document.getElementById(map[to]).classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+
+    function openServices(e) {
+      if (e) e.preventDefault();
+      document.getElementById('servicesPage').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeServices() {
+      document.getElementById('servicesPage').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    function openStory(e) {
+      if (e) e.preventDefault();
+      document.getElementById('storyPage').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeStory() {
+      document.getElementById('storyPage').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ── TEAM PAGE ──
+    function openTeam(e) {
+      if (e) e.preventDefault();
+      document.getElementById('teamPage').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeTeam() {
+      document.getElementById('teamPage').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    // ── CONTACT PAGE ──
+    function openContact(e) {
+      if (e) e.preventDefault();
+      document.getElementById('contactPage').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeContact() {
+      document.getElementById('contactPage').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { closeServices(); closeStory(); closeTeam(); closeContact(); }
+    });
+
+    // ── BUSINESS HOURS (Mon–Fri 08:00–17:00, Sat 08:00–13:00, Sun closed) ──
+    (function() {
+      const DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+      function getBizStatus() {
+        const now = new Date(new Date().toLocaleString('en-US', { timeZone: 'Africa/Johannesburg' }));
+        const day = now.getDay(), h = now.getHours(), m = now.getMinutes();
+        const t = h + m / 60;
+        if (day === 0) return { open: false, note: 'Closed · Opens Monday 08:00' };
+        if (day === 6) {
+          if (t >= 8 && t < 13) return { open: true, note: 'Open · Closes 13:00' };
+          return { open: false, note: t < 8 ? 'Closed · Opens 08:00' : 'Closed · Opens Monday 08:00' };
+        }
+        if (t >= 8 && t < 17) return { open: true, note: 'Open · Closes 17:00' };
+        if (t < 8) return { open: false, note: 'Closed · Opens 08:00' };
+        const nextDay = day === 5 ? 'Monday' : DAY_NAMES[day + 1];
+        return { open: false, note: 'Closed · Opens ' + nextDay + ' 08:00' };
+      }
+      function renderBizStatus() {
+        const s = getBizStatus();
+        const dot = document.getElementById('bizDot');
+        const txt = document.getElementById('bizText');
+        if (!dot || !txt) return;
+        dot.className = 'biz-dot ' + (s.open ? 'open' : 'closed');
+        const [state, ...rest] = s.note.split(' · ');
+        txt.innerHTML = '<span class="biz-state">' + state + '</span>' + (rest.length ? ' · ' + rest.join(' · ') : '');
+      }
+      renderBizStatus();
+      setInterval(renderBizStatus, 60000);
+    })();
+
+    // ── POPIA BANNER — init after DOM ready ──
+    window.addEventListener('load', function() {
+      if (!localStorage.getItem('popia_ok')) {
+        const bar = document.getElementById('popiaBar');
+        if (bar) bar.style.display = 'flex';
+      }
+    });
+    function dismissPopia() {
+      localStorage.setItem('popia_ok', '1');
+      document.getElementById('popiaBar').style.display = 'none';
+    }
+
+    // ── CHATBOT ──
+    const chatKnowledge = [
+      {
+        patterns: ['area','cover','where','region','kzn','kwazulu','natal','transkei','service area','reach'],
+        answer: 'INDWE services KwaZulu-Natal, Transkei, and surrounding areas. Our operations base is Ensor Industrial Park, Glen Anil, Durban — strategically positioned to serve these distribution routes efficiently.'
+      },
+      {
+        patterns: ['goods','handle','fmcg','product','cargo','stock','items','what do you move','what do you carry'],
+        answer: 'We specialise exclusively in Fast-Moving Consumer Goods (FMCG). Over 25 years in this sector means we understand the demands, timelines, and standards FMCG distribution requires.'
+      },
+      {
+        patterns: ['warehousing only','distribution only','both','what service','what do you offer','offer'],
+        answer: 'INDWE offers both warehousing and distribution — as a fully integrated solution or separately. We can store your product at Ensor Industrial Park and distribute across KZN and Transkei, or handle distribution only if you have your own storage.'
+      },
+      {
+        patterns: ['how long','years','experience','since','history','established','operating','how old'],
+        answer: 'INDWE has over 25 years of experience in the FMCG environment. Our longest client partnership has run continuously for over 15 years — we are a proven, established partner.'
+      },
+      {
+        patterns: ['quote','price','cost','pricing','rate','how much','get a quote'],
+        answer: 'Request a quote via our Contact Us page, call (031) 569 2378, or email indweagency@mweb.co.za. We respond within one business day.'
+      },
+      {
+        patterns: ['contact','phone','email','address','reach','call','get in touch','telephone','fax'],
+        answer: 'Phone: (031) 569 2378\nEmail: indweagency@mweb.co.za\nAddress: Unit 112, Ensor Industrial Park, 21 Donald Ensor Road, Glen Anil, Durban'
+      },
+      {
+        patterns: ['hours','open','close','time','when','trading','weekend','saturday','sunday'],
+        answer: 'We are open Monday to Friday 08:00–17:00, and Saturday 08:00–13:00. Closed on Sundays and public holidays.'
+      },
+      {
+        patterns: ['partner','client','who use','companies','trust','work with'],
+        answer: 'Three of South Africa\'s leading FMCG companies trust INDWE to warehouse and distribute their products — some partnerships have run for over 15 years continuously.'
+      },
+      {
+        patterns: ['volume','tons','capacity','how much can','monthly','1000'],
+        answer: 'INDWE distributes approximately 1,000 tons of FMCG product per month across KwaZulu-Natal and Transkei.'
+      },
+      {
+        patterns: ['hi','hello','hey','good morning','good afternoon','howzit','greetings'],
+        answer: 'Hello! I\'m the INDWE Assistant. I can answer questions about our services, coverage, experience, and how to get in touch. What would you like to know?'
+      },
+      {
+        patterns: ['thank','thanks','great','helpful','appreciate','perfect'],
+        answer: 'You\'re welcome! Feel free to ask anything else, or visit our Contact Us page to speak with the team directly.'
+      },
+    ];
+
+    const chatQuickDefs = [
+      { label: 'Coverage area',  q: 'What areas do you cover?' },
+      { label: 'Our services',   q: 'What services do you offer?' },
+      { label: 'Monthly volume', q: 'How much volume do you handle?' },
+      { label: 'Experience',     q: 'How long have you been operating?' },
+      { label: 'Get a quote',    q: 'How do I get a quote?' },
+      { label: 'Contact info',   q: 'What is your contact information?' },
+      { label: 'Business hours', q: 'What are your business hours?' },
+    ];
+
+    function chatGetAnswer(text) {
+      const lower = text.toLowerCase();
+      for (const entry of chatKnowledge) {
+        if (entry.patterns.some(p => lower.includes(p))) return entry.answer;
+      }
+      return "I'm not sure about that one. For detailed enquiries please contact us at indweagency@mweb.co.za or call (031) 569 2378 — our team will be happy to help.";
+    }
+
+    function chatAddBubble(text, role) {
+      const msgs = document.getElementById('chatMessages');
+      const bubble = document.createElement('div');
+      bubble.className = 'chat-bubble ' + role;
+      bubble.style.whiteSpace = 'pre-line';
+      bubble.textContent = text;
+      msgs.appendChild(bubble);
+      msgs.scrollTop = msgs.scrollHeight;
+    }
+
+    function chatSend(text) {
+      if (!text.trim()) return;
+      chatAddBubble(text, 'user');
+      document.getElementById('chatInput').value = '';
+      setTimeout(() => chatAddBubble(chatGetAnswer(text), 'bot'), 380);
+    }
+
+    const chatWin = document.getElementById('chatWindow');
+    const chatToggleBtn = document.getElementById('chatToggle');
+    let chatOpen = false, chatMin = false;
+
+    chatToggleBtn.addEventListener('click', () => {
+      chatOpen = !chatOpen;
+      chatMin = false;
+      chatWin.classList.toggle('open', chatOpen);
+      chatWin.classList.remove('minimised');
+    });
+
+    document.getElementById('chatClear').addEventListener('click', () => {
+      const msgs = document.getElementById('chatMessages');
+      msgs.innerHTML = '';
+      chatAddBubble("Hi! I'm the INDWE Assistant. Ask me about our services, coverage, experience, or how to get in touch.", 'bot');
+    });
+
+    document.getElementById('chatMinimise').addEventListener('click', () => {
+      chatMin = !chatMin;
+      chatWin.classList.toggle('minimised', chatMin);
+    });
+
+    document.getElementById('chatClose').addEventListener('click', () => {
+      chatOpen = false; chatMin = false;
+      chatWin.classList.remove('open','minimised');
+    });
+
+    document.getElementById('chatSendBtn').addEventListener('click', () => chatSend(document.getElementById('chatInput').value));
+    document.getElementById('chatInput').addEventListener('keydown', e => { if (e.key === 'Enter') chatSend(e.target.value); });
+
+    const qrWrap = document.getElementById('chatQuickReplies');
+    chatQuickDefs.forEach(def => {
+      const btn = document.createElement('button');
+      btn.className = 'chat-qr';
+      btn.textContent = def.label;
+      btn.addEventListener('click', () => chatSend(def.q));
+      qrWrap.appendChild(btn);
+    });
+
+    chatAddBubble("Hi! I'm the INDWE Assistant. Ask me about our services, coverage, experience, or how to get in touch.", 'bot');
+
+  </script>
+
+  <!-- POPIA compliance banner -->
+  <div class="popia-bar" id="popiaBar" style="display:none;">
+    <p class="popia-text">
+      This site collects personal information through the quote form solely to respond to your enquiry.
+      By submitting, you consent to INDWE Agency processing your data in accordance with
+      <a href="#" title="Privacy Policy">POPIA</a>. We do not share your data with third parties.
+    </p>
+    <button class="popia-dismiss" id="popia-dismiss-btn" onclick="dismissPopia()">Got it</button>
+  </div>
+
+</body>
+</html>
